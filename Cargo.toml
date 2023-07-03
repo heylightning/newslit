@@ -6,3 +6,11 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+error-chain = "0.12.4"
+reqwest = "0.11.12"
+select = "0.5.0"
+tokio = { version = "1.21.1", features = [ "full" ] }
+serde_json = "1.0"
+serde = { version = "1.0", features = [ "derive" ] }
+rocket = "*"
+rocket_cors = "0.5.2"
