@@ -24,7 +24,7 @@ cd newslit
 ```
 cargo run
 ```
-4. After making sure that the data is visible on your ` localhost:8000 ` fire up the **index.html** file and enjoy reading. 📖
+4. After making sure that the data is visible on your ` localhost:8000 ` fire up the **gui/index.html** file and enjoy reading. 📖
 
 ### LICENSE 
 MIT License
