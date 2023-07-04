@@ -1,13 +1,14 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM loaded!");
-
+    document.getElementById('loadingData').style.display = 'inherit';
     fetch('http://localhost:8000')
         .then(response => response.json())
         .then(data => {
+            document.getElementById('loadingData').style.display = 'none';
             let jsonData = data;
             console.info("Response successfully stored in jsonData.");
-            console.log(jsonData);
+
 
             let newsContainer = document.getElementById("newsContainer");
 
