@@ -36,6 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 titleH1.appendChild(titleLink);
 
                 let hr = document.createElement("hr");
+                hr.style.height = "5px";
+                hr.style.backgroundColor = "#c85c5c";
+                hr.style.border = "none";
 
                 tagDiv.appendChild(tagP);
                 titleNTagsDiv.appendChild(tagDiv);

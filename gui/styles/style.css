@@ -133,11 +133,12 @@ body {
     padding: 20px;
     font-size: .8rem;
     border-radius: 20px;
-    background-color: #2e3a4e;
+    /* background-color: #2e3a4e; */
+    transition: .2s;
 }
 
-.title-n-tags h1:hover {
-    text-decoration: underline;
+.title-n-tags:hover {
+    background-color: #c85c5c;
 }
 
 .tag {
@@ -148,7 +149,7 @@ body {
     padding: 5px;
     background-color: #c85c5c;
     border-radius: 20px;
-    color: white;
+    color: black;
     font-weight: bold;
 }
 
