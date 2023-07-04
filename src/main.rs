@@ -37,33 +37,32 @@ async fn newslit_api() -> Result<String, Box<dyn std::error::Error>> {
     let body = res.text().await?;
 
     let document = Document::from(body.as_str());
-
-    let mut hreflist: HashSet<String> = HashSet::new();
     let mut objcontent: String = "[ ".to_string();
+    let mut finalist: HashSet<String> = HashSet::new();
 
     for node in document.find(Name("a")) {
         if let Some(href) = node.attr("href") {
             if href.starts_with("/lifestyle/") || href.starts_with("/leadership/") || href.starts_with("/starting-a-business/") || href.starts_with("/technology/") || href.starts_with("/money-finance/") || href.starts_with("/growing-a-business/") || href.starts_with("/science-technology/") || href.starts_with("/living/") || href.starts_with("/business-news/") {
                 
                 let temphref = "https://www.entrepreneur.com".to_string() + href;
-                hreflist.insert(temphref);
-
-                for content in &hreflist {
-
-                    let construct_a: Vec<&str> = content.split("/").collect();
-                    let construct_b: Vec<&str> = construct_a[4].split("-").collect();
-                    
-                    let response: ResponseOBJ = ResponseOBJ {
-                        href: format!("{}", content),
-                        title: format!("{}", construct_b.join(" ").to_uppercase()),
-                        tag: format!("{}", construct_a[3]),
-                        key: format!("{}", construct_a[5]),
-                    };
-                    let json = serde_json::to_string(&response).unwrap();
-                    objcontent = objcontent + &json + ",";
-                }
+                finalist.insert(temphref);
             }
         }
+    }
+
+    for content in &finalist {
+
+        let construct_a: Vec<&str> = content.split("/").collect();
+        let construct_b: Vec<&str> = construct_a[4].split("-").collect();
+        
+        let response: ResponseOBJ = ResponseOBJ {
+            href: format!("{}", content),
+            title: format!("{}", construct_b.join(" ").to_uppercase()),
+            tag: format!("{}", construct_a[3]),
+            key: format!("{}", construct_a[5]),
+        };
+        let json = serde_json::to_string(&response).unwrap();
+        objcontent = objcontent + &json + ",";
     }
 
     let main_content = &objcontent[0..(objcontent.len() - 1)];
