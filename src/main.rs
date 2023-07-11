@@ -5,17 +5,17 @@ extern crate rocket;
 extern crate rocket_cors;
 
 use reqwest::Client;
+use rocket_cors::{AllowedOrigins, CorsOptions};
 use select::document::Document;
 use select::predicate::Name;
+use serde::{Deserialize, Serialize};
 use std::collections::HashSet;
-use serde::{ Deserialize, Serialize };
-use rocket_cors::{ CorsOptions, AllowedOrigins };
 
 #[derive(Serialize, Deserialize)]
 struct ResponseOBJ {
-    href: String, 
+    href: String,
     title: String,
-    tag: String, 
+    tag: String,
     key: String,
 }
 
@@ -29,7 +29,7 @@ fn rockit() -> String {
 
 #[tokio::main]
 async fn newslit_api() -> Result<String, Box<dyn std::error::Error>> {
-    let url = "https://www.entrepreneur.com/"; 
+    let url = "https://www.entrepreneur.com/";
 
     let client = Client::new();
     let res = client.get(url).send().await?;
@@ -42,8 +42,16 @@ async fn newslit_api() -> Result<String, Box<dyn std::error::Error>> {
 
     for node in document.find(Name("a")) {
         if let Some(href) = node.attr("href") {
-            if href.starts_with("/lifestyle/") || href.starts_with("/leadership/") || href.starts_with("/starting-a-business/") || href.starts_with("/technology/") || href.starts_with("/money-finance/") || href.starts_with("/growing-a-business/") || href.starts_with("/science-technology/") || href.starts_with("/living/") || href.starts_with("/business-news/") {
-                
+            if href.starts_with("/lifestyle/")
+                || href.starts_with("/leadership/")
+                || href.starts_with("/starting-a-business/")
+                || href.starts_with("/technology/")
+                || href.starts_with("/money-finance/")
+                || href.starts_with("/growing-a-business/")
+                || href.starts_with("/science-technology/")
+                || href.starts_with("/living/")
+                || href.starts_with("/business-news/")
+            {
                 let temphref = "https://www.entrepreneur.com".to_string() + href;
                 finalist.insert(temphref);
             }
@@ -51,10 +59,9 @@ async fn newslit_api() -> Result<String, Box<dyn std::error::Error>> {
     }
 
     for content in &finalist {
-
         let construct_a: Vec<&str> = content.split("/").collect();
         let construct_b: Vec<&str> = construct_a[4].split("-").collect();
-        
+
         let response: ResponseOBJ = ResponseOBJ {
             href: format!("{}", content),
             title: format!("{}", construct_b.join(" ").to_uppercase()),
@@ -71,10 +78,14 @@ async fn newslit_api() -> Result<String, Box<dyn std::error::Error>> {
     Ok(main_content)
 }
 
-fn main()  {
-    let cors  = CorsOptions::default()
+fn main() {
+    let cors = CorsOptions::default()
         .allowed_origins(AllowedOrigins::all())
-        .to_cors().unwrap();
+        .to_cors()
+        .unwrap();
 
-    rocket::ignite().mount("/", routes![rockit]).attach(cors).launch();
+    rocket::ignite()
+        .mount("/", routes![rockit])
+        .attach(cors)
+        .launch();
 }
